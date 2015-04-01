@@ -144,7 +144,13 @@ namespace CallingConv {
 
     /// \brief MSVC calling convention that passes vectors and vector aggregates
     /// in SSE registers.
-    X86_VectorCall = 80
+    X86_VectorCall = 80,
+
+    /// AVR_INTR - Calling convention used for AVR interrupt routines.
+    AVR_INTR = 81,
+
+    /// AVR_SIGNAL - Calling convention used for AVR signal routines.
+    AVR_SIGNAL = 82
   };
 } // End CallingConv namespace
 
