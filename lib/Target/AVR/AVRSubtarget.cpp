@@ -31,6 +31,7 @@ AVRSubtarget::AVRSubtarget(const std::string &TT, const std::string &CPU,
   InstrInfo(),
   FrameLowering(),
   TLInfo(TM),
+  DL("e-p:16:8-i16:8-i32:8-i64:8-f32:8-f64:8-n8"),
   TSInfo(*getDataLayout()),
   
   // Supported instructions
