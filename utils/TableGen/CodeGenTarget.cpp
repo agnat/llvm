@@ -216,7 +216,22 @@ CodeGenRegBank &CodeGenTarget::getRegBank() const {
 
 void CodeGenTarget::ReadRegAltNameIndices() const {
   RegAltNameIndices = Records.getAllDerivedDefinitions("RegAltNameIndex");
-  std::sort(RegAltNameIndices.begin(), RegAltNameIndices.end(), LessRecord());
+  if (RegAltNameIndices.size() > 1) {
+    // If we have the special NoRegAltName entry bring it to the front.
+    // AsmWriterEmitter relies on it.
+    std::vector<Record*>::iterator it = std::find_if(
+        std::begin(RegAltNameIndices), std::end(RegAltNameIndices),
+        [&](Record * Rec) { return Rec->getName() == "NoRegAltName"; });
+    Record * NoAltNameRec = 0;
+    if (it != std::end(RegAltNameIndices)) {
+      NoAltNameRec = *it;
+      RegAltNameIndices.erase(it);
+    }
+    std::sort(RegAltNameIndices.begin(), RegAltNameIndices.end(), LessRecord());
+    if (NoAltNameRec) {
+      RegAltNameIndices.insert(RegAltNameIndices.begin(), NoAltNameRec);
+    }
+  }
 }
 
 /// getRegisterByName - If there is a register with the specific AsmName,
